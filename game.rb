@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require './player'
-require './number_generator'
+require './question'
 
 class Game
 
@@ -27,9 +27,9 @@ class Game
   end
 
   def prompt_player
-    question = Question.new
+    @question = Question.new
     puts "Question for #{@current_player.name}:"
-    puts question.ask
+    puts @question.ask
     print '> '
     answer = gets.chomp.to_i
     sleep(1)
@@ -37,7 +37,7 @@ class Game
   end
 
   def check_answer(answer)
-    if question.answer == answer
+    if @question.answer == answer
       puts "Yes, #{@current_player.name}! You are correct!"
     else
       puts "Seriously, #{@current_player.name}? No!"
@@ -65,6 +65,7 @@ class Game
       exit if answer == 'n'
       if answer == 'y'
         sleep(1)
+        initialize
         start
       end
     end
