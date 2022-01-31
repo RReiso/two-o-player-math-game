@@ -4,7 +4,6 @@ require './player'
 require './number_generator'
 
 class Game
-  include NumberGenerator
 
   def initialize
     @player1 = Player.new('Player_1')
@@ -24,20 +23,21 @@ class Game
       sleep(1)
     end
     announce_winner
+    play_again
   end
 
   def prompt_player
-    num1, num2 = generate_two_numbers
+    question = Question.new
     puts "Question for #{@current_player.name}:"
-    puts "What does #{num1} plus #{num2} equal?"
+    puts question.ask
     print '> '
     answer = gets.chomp.to_i
     sleep(1)
-    check_answer(num1, num2, answer)
+    check_answer(answer)
   end
 
-  def check_answer(num1, num2, answer)
-    if num1 + num2 == answer
+  def check_answer(answer)
+    if question.answer == answer
       puts "Yes, #{@current_player.name}! You are correct!"
     else
       puts "Seriously, #{@current_player.name}? No!"
@@ -56,10 +56,9 @@ class Game
 
   def announce_winner
     puts "#{@current_player.name} wins with a score of #{@current_player.score}/3"
-    play_again?
   end
 
-  def play_again?
+  def play_again
     loop do
       print "\nPlay again? y/n: "
       answer = gets.chomp.downcase
